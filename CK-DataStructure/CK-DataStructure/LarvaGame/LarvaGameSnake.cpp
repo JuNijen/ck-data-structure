@@ -30,28 +30,29 @@ void Snake::Update()
 	}
 	else
 	{
-		Sleep(m_delay);
 		switch (curVector)
 		{
 		case LEFT:
 			if (m_x - 1 > 0) m_x--;
-			else 
-			{
-			}
+			else m_status = false;
 			break;
 		case RIGHT:
 			if (m_x + 1 < m_mapWidth - 1) m_x++;
+			else m_status = false;
 			break;
 		case UP:
 			if (m_y - 1 > 0) m_y--;
+			else m_status = false;
 			break;
 		case DOWN:
 			if (m_y + 1 < m_mapHeight - 1) m_y++;
+			else m_status = false;
 			break;
 		default:
 			break;
 		}
 	}
+	Sleep(m_speed);
 }
 
 void Snake::Draw()
