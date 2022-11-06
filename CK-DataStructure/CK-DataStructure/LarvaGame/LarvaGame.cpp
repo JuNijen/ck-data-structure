@@ -4,8 +4,6 @@
 int main() 
 {
 	LarvaGameManager *larvaGM = new LarvaGameManager();
-	LarvaGameManager::SetStatus(larvaGM->GameInit());
-
 	larvaGM->GameStartScreen();
 
 	while (LarvaGameManager::GetStatus())
@@ -32,11 +30,7 @@ void LarvaGameManager::SetStatus(bool status)
 bool LarvaGameManager::GameInit()
 {
 	bool bResult = false;
-
-	//추후 난이도 선택 가능하게끔
-	m_mapWidth = 20;
-	m_mapHeight = 20;
-	m_gameSpeed = 200;
+	// easy = 200, normal = 100, hard = 50
 
 	m_gameMap = new GameMap(m_mapWidth, m_mapHeight);
 	m_snake = new Snake(m_mapWidth /2, m_mapHeight /2, (wchar_t*)L"□", m_gameSpeed);
@@ -48,6 +42,20 @@ bool LarvaGameManager::GameInit()
 	bResult = true;
 
 	return bResult;
+}
+
+void LarvaGameManager::PrintGameMenu(int x, int y)
+{
+	wchar_t* menuText[] =
+	{
+		(wchar_t*)L"Easy mode",
+		(wchar_t*)L"Normal mode",
+		(wchar_t*)L"Hard mode",
+		(wchar_t*)L"Exit",
+	};
+
+	ScreenPrint(3, 3, (wchar_t*)L"SnakeGame!");
+	for (int i = 0; i < 4; i++) ScreenPrint(x, y + i, menuText[i]);
 }
 
 bool LarvaGameManager::Draw()
@@ -87,8 +95,71 @@ bool LarvaGameManager::MakeItem()
 
 void LarvaGameManager::GameStartScreen()
 {
-	ScreenPrint(9, 15, (wchar_t*)L"SnakeGame!");
-	_getch();
+	int menu = GAME_MENU_NORMAL;
+	int menuX = 3;
+	int menuY = 6;
+	bool menuSelected = false;
+
+	PrintGameMenu(menuX, menuY);
+	ScreenPrint(2, menuY + menu, (wchar_t*)L"▶");
+	ScreenFlipping();
+
+	while (!menuSelected)
+	{
+		int nKey = _getch();
+
+		switch (nKey)
+		{
+		case UP:
+			if (menu > GAME_MENU_EASY) { menu--; }
+			break;
+		case DOWN:
+			if (menu < GAME_MENU_EXIT) { menu++; }
+			break;
+		case ENTER:
+			menuSelected = true;
+			break;
+		}
+		ScreenClear();
+		ScreenPrint(2, menuY+menu, (wchar_t*)L"▶");
+		PrintGameMenu(menuX, menuY);
+		ScreenFlipping();
+	}
+
+	switch (menu)
+	{
+	case GAME_MENU_EASY:
+		m_mapWidth = 30;
+		m_mapHeight = 30;
+		m_gameSpeed = 200;
+		break;
+
+	case GAME_MENU_NORMAL:
+		m_mapWidth = 20;
+		m_mapHeight = 20;
+		m_gameSpeed = 100;
+		break;
+
+	case GAME_MENU_HARD:
+		m_mapWidth = 20;
+		m_mapHeight = 20;
+		m_gameSpeed = 50;
+		break;
+
+	case GAME_MENU_EXIT:
+		//GameOverScreen();
+		ScreenPrint(9, 15, (wchar_t*)L"Press key to exit");
+		ScreenFlipping();
+		_getch();
+		exit(0);
+		break;
+	}
+	LarvaGameManager::SetStatus(GameInit());
+}
+
+void LarvaGameManager::KeyInput()
+{
+	
 }
 
 void LarvaGameManager::GameOverScreen()
@@ -96,7 +167,7 @@ void LarvaGameManager::GameOverScreen()
 	int gameoverX = 2;
 	int gameoverY = 2;
 
-	wchar_t* str[] =
+	wchar_t* gameOverText[] =
 	{
 		(wchar_t*)L"　■■■　　　■■■　　■■　■■　■■■■■",
 		(wchar_t*)L"■　　　　　■　　　■　■　■　■　■　　　　",
@@ -126,7 +197,7 @@ void LarvaGameManager::GameOverScreen()
 	ScreenClear();
 	SetColor(4);
 
-	for (int i = 0; i < 11; i++) ScreenPrint(gameoverX, gameoverY + i, str[i]);
+	for (int i = 0; i < 11; i++) ScreenPrint(gameoverX, gameoverY + i, gameOverText[i]);
 
 	SetColor(2);
 	ScreenPrint(9, 15, (wchar_t*)L"Press key to exit");

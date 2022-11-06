@@ -10,6 +10,14 @@ using namespace std;
 
 class LarvaGameManager
 {
+	enum GAME_MENU
+	{
+		GAME_MENU_EASY,
+		GAME_MENU_NORMAL,
+		GAME_MENU_HARD,
+		GAME_MENU_EXIT
+	};
+
 public:
 	static bool m_bContinueStatus;
 
@@ -20,11 +28,11 @@ public:
 	LarvaGameManager() { GameInit(); };
 	~LarvaGameManager() {};
 
-	bool GameInit();
 	bool Draw();
 	bool Update();
 	bool MakeItem();
 	void GameStartScreen();
+	void KeyInput();
 	void GameOverScreen();
 
 private:
@@ -36,6 +44,9 @@ private:
 	int				m_gameSpeed;
 	int				m_mapWidth;
 	int				m_mapHeight;
+
+	bool GameInit();
+	void PrintGameMenu(int x, int y);
 };
 
 bool LarvaGameManager::m_bContinueStatus = true;
