@@ -25,9 +25,6 @@ public:
 	bool Update();
 	bool MakeItem();
 
-	//bool GetState() { return m_bContinue; };
-	//void SetState(bool state) { m_bContinue = state; };
-
 private:
 	//추후 크기, 스피드를 입력받을 수 있게끔.
 	//화면도 그려주면 좋을듯.
@@ -35,7 +32,6 @@ private:
 	GameMap*	m_gameMap;
 	Snake*		m_snake;
 	int				m_gameSpeed;
-	//bool			m_bContinue;
 };
 
 bool LarvaGameManager::m_bContinueStatus = true;

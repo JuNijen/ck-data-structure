@@ -34,7 +34,7 @@ bool LarvaGameManager::GameInit()
 	//추후 선택 가능하게끔
 	int mapWidth = 20;
 	int mapHeight = 20;
-	m_gameSpeed = 100;
+	m_gameSpeed = 200;
 
 	m_gameMap = new GameMap(mapWidth, mapHeight);
 	m_snake = new Snake( mapWidth/2, mapHeight/2, (wchar_t*)L"□", m_gameSpeed);
@@ -42,6 +42,7 @@ bool LarvaGameManager::GameInit()
 	ScreenInit();
 	m_gameMap->InitMap();
 	m_snake->SetMap(mapWidth, mapHeight	);
+	m_snake->MakeItem();
 	bResult = true;
 
 	return bResult;
@@ -65,7 +66,7 @@ bool LarvaGameManager::Update()
 	bool bResult = false;
 
 	m_snake->Update();
-	SetStatus(m_snake->IsAlive());
+	//SetStatus(m_snake->IsAlive());
 	ScreenFlipping();
 	bResult = true;
 
@@ -76,7 +77,8 @@ bool LarvaGameManager::MakeItem()
 {
 	bool bResult = false;
 
-	m_gameMap->SetItem(GameObject(rand() % m_gameMap->GetWidth(), rand() % m_gameMap->GetHeight(), (wchar_t*)L"O"));
+	m_snake->MakeItem();
+	bResult = true;
 
 	return bResult;
 }
