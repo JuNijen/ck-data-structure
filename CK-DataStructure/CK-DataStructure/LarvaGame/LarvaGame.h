@@ -24,6 +24,8 @@ public:
 	bool Draw();
 	bool Update();
 	bool MakeItem();
+	void GameStartScreen();
+	void GameOverScreen();
 
 private:
 	//추후 크기, 스피드를 입력받을 수 있게끔.
@@ -32,6 +34,8 @@ private:
 	GameMap*	m_gameMap;
 	Snake*		m_snake;
 	int				m_gameSpeed;
+	int				m_mapWidth;
+	int				m_mapHeight;
 };
 
 bool LarvaGameManager::m_bContinueStatus = true;

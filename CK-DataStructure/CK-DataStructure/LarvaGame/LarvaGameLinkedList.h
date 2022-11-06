@@ -23,6 +23,7 @@ public:
 	void remove(int pos);
 	GameObject* retrieve(int pos);
 	bool isEmpty() { return m_head == nullptr; }
+	int length() { return m_count; }
 
 	void update();
 	void draw();
