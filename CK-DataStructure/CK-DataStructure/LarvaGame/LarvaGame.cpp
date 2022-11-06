@@ -4,15 +4,7 @@
 int main() 
 {
 	LarvaGameManager *larvaGM = new LarvaGameManager();
-	larvaGM->GameStartScreen();
-
-	while (LarvaGameManager::GetStatus())
-	{
-		larvaGM->Draw();
-		larvaGM->Update();
-	}
-
-	larvaGM->GameOverScreen();
+	larvaGM->GamePlay();
 	return 0;
 }
 
@@ -100,6 +92,10 @@ void LarvaGameManager::GameStartScreen()
 	int menuY = 6;
 	bool menuSelected = false;
 
+	SetColor(15);
+	ScreenClear();
+	ScreenFlipping();
+
 	PrintGameMenu(menuX, menuY);
 	ScreenPrint(2, menuY + menu, (wchar_t*)L"¢º");
 	ScreenFlipping();
@@ -157,11 +153,6 @@ void LarvaGameManager::GameStartScreen()
 	LarvaGameManager::SetStatus(GameInit());
 }
 
-void LarvaGameManager::KeyInput()
-{
-	
-}
-
 void LarvaGameManager::GameOverScreen()
 {
 	int gameoverX = 2;
@@ -200,7 +191,22 @@ void LarvaGameManager::GameOverScreen()
 	for (int i = 0; i < 11; i++) ScreenPrint(gameoverX, gameoverY + i, gameOverText[i]);
 
 	SetColor(2);
-	ScreenPrint(9, 15, (wchar_t*)L"Press key to exit");
+	ScreenPrint(9, 15, (wchar_t*)L"Press key to restart");
 	ScreenFlipping();
 	_getch();
+
+	GamePlay();
+}
+
+void LarvaGameManager::GamePlay()
+{
+	GameStartScreen();
+
+	while (LarvaGameManager::GetStatus())
+	{
+		Draw();
+		Update();
+	}
+
+	GameOverScreen();
 }

@@ -28,12 +28,7 @@ public:
 	LarvaGameManager() { GameInit(); };
 	~LarvaGameManager() {};
 
-	bool Draw();
-	bool Update();
-	bool MakeItem();
-	void GameStartScreen();
-	void KeyInput();
-	void GameOverScreen();
+	void GamePlay();
 
 private:
 	//추후 크기, 스피드를 입력받을 수 있게끔.
@@ -46,6 +41,12 @@ private:
 	int				m_mapHeight;
 
 	bool GameInit();
+	bool Draw();
+	bool Update();
+	bool MakeItem();
+
+	void GameStartScreen();
+	void GameOverScreen();
 	void PrintGameMenu(int x, int y);
 };
 
